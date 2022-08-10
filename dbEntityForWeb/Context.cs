@@ -10,14 +10,23 @@ namespace dbEntityForWeb
 {
      class Context:DbContext
     {
+     
         public Context()
         {
-
+            // Database.EnsureDeleted();
+            // Database.EnsureCreated();
+               Database.Migrate();
         }
+       
+
+       
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"host=localhost;port=;database=db;username=root;password=1234;");
+            optionsBuilder.UseNpgsql(@"host=localhost;port=5432;DataBase=db;Username=postgres;password=1234");
         }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Company> Companys { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<LogActivity> LogActivities { get; set; }
     }
 }
