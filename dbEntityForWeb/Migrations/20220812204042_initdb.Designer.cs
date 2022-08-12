@@ -11,8 +11,8 @@ using dbEntityForWeb;
 namespace dbEntityForWeb.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220809231940_init")]
-    partial class init
+    [Migration("20220812204042_initdb")]
+    partial class initdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,13 +31,23 @@ namespace dbEntityForWeb.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CurrentCompanyId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<int>("PaymentId")
+                        .HasColumnType("integer");
 
                     b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CurrentCompanyId");
+
+                    b.HasIndex("PaymentId");
 
                     b.ToTable("Clients");
                 });
@@ -99,6 +109,25 @@ namespace dbEntityForWeb.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("dbEntityForWeb.Entity.Client", b =>
+                {
+                    b.HasOne("dbEntityForWeb.Entity.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CurrentCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("dbEntityForWeb.Entity.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Payment");
                 });
 #pragma warning restore 612, 618
         }

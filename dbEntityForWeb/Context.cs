@@ -13,13 +13,10 @@ namespace dbEntityForWeb
      
         public Context()
         {
-            // Database.EnsureDeleted();
-            // Database.EnsureCreated();
-               Database.Migrate();
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
+            
         }
-       
-
-       
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(@"host=localhost;port=5432;DataBase=db;Username=postgres;password=1234");

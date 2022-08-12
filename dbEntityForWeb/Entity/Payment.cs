@@ -12,6 +12,6 @@ namespace dbEntityForWeb.Entity
         public double Cost { get; set; }
         public bool Paid { get; set; }
         public double Contributed { get; set; }
-
+        
     }
 }

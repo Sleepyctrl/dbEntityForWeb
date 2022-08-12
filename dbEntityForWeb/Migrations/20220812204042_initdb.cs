@@ -5,24 +5,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace dbEntityForWeb.Migrations
 {
-    public partial class init : Migration
+    public partial class initdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Companys",
                 columns: table => new
@@ -64,6 +50,44 @@ namespace dbEntityForWeb.Migrations
                 {
                     table.PrimaryKey("PK_Payments", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Clients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<long>(type: "bigint", nullable: false),
+                    CurrentCompanyId = table.Column<int>(type: "integer", nullable: false),
+                    PaymentId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Clients_Companys_CurrentCompanyId",
+                        column: x => x.CurrentCompanyId,
+                        principalTable: "Companys",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Clients_Payments_PaymentId",
+                        column: x => x.PaymentId,
+                        principalTable: "Payments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_CurrentCompanyId",
+                table: "Clients",
+                column: "CurrentCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_PaymentId",
+                table: "Clients",
+                column: "PaymentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -72,10 +96,10 @@ namespace dbEntityForWeb.Migrations
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "Companys");
+                name: "LogActivities");
 
             migrationBuilder.DropTable(
-                name: "LogActivities");
+                name: "Companys");
 
             migrationBuilder.DropTable(
                 name: "Payments");

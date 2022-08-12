@@ -29,7 +29,7 @@ namespace dbEntityForWeb.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int>("CurrentCompanyId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -43,7 +43,7 @@ namespace dbEntityForWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("CurrentCompanyId");
 
                     b.HasIndex("PaymentId");
 
@@ -113,7 +113,7 @@ namespace dbEntityForWeb.Migrations
                 {
                     b.HasOne("dbEntityForWeb.Entity.Company", "Company")
                         .WithMany()
-                        .HasForeignKey("CompanyId")
+                        .HasForeignKey("CurrentCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
